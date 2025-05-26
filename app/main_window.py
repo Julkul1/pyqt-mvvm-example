@@ -1,6 +1,6 @@
 from PyQt6.QtWidgets import QMainWindow, QWidget, QHBoxLayout
 
-from app.model.counter_model import CounterModel
+from app.models.counter_model import CounterModel
 from app.utils.config import AppConfig
 from app.views.counter_view import CounterView
 from app.view_models.counter_view_model import CounterViewModel

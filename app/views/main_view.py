@@ -45,6 +45,10 @@ class MainView(QWidget):
         # Bind Commands
         self.button_home.clicked.connect(lambda: self._view_model.set_current_view("home"))
         self.button_settings.clicked.connect(lambda: self._view_model.set_current_view("settings"))
+        self.button_home.setStyleSheet("""
+            background-color: #00FF00;  /* optional background */
+            border-bottom: 2px solid #cccccc;  /* bottom border only */
+        """)
 
         # Add Widgets to Layout
         navbar_layout.addWidget(self.button_home)
@@ -56,7 +60,7 @@ class MainView(QWidget):
         navbar_widget.setLayout(navbar_layout)
         navbar_widget.setFixedHeight(100)
         navbar_widget.setStyleSheet("""
-            background-color: #f0f0f0;  /* optional background */
+            background-color: #F0F0F0;  /* optional background */
             border-bottom: 2px solid #cccccc;  /* bottom border only */
         """)
 

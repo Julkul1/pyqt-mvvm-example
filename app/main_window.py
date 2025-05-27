@@ -2,8 +2,10 @@ from PyQt6.QtWidgets import QMainWindow, QWidget, QHBoxLayout
 
 from app.models.counter_model import CounterModel
 from app.utils.config import AppConfig
+from app.view_models.main_view_model import MainViewModel
 from app.views.counter_view import CounterView
 from app.view_models.counter_view_model import CounterViewModel
+from app.views.main_view import MainView
 
 
 class MainWindow(QMainWindow):
@@ -25,7 +27,7 @@ class MainWindow(QMainWindow):
 
 
         model = CounterModel()
-        view_model = CounterViewModel(model)
-        view = CounterView(view_model)
+        view_model = MainViewModel(model)
+        view = MainView(view_model)
         self.setCentralWidget(view)
         view.show()

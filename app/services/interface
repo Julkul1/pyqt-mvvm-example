@@ -1,0 +1,13 @@
+from typing import Protocol, runtime_checkable
+
+@runtime_checkable
+class IConfigurationService(Protocol):
+    """Interface for configuration service"""
+    def get(self, key: str, default=None):
+        ...
+    def set(self, key: str, value) -> None:
+        ...
+    def load(self) -> None:
+        ...
+    def save(self) -> None:
+        ... 

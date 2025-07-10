@@ -1,23 +1,41 @@
-import sys
-from PyQt6.QtWidgets import QApplication
+"""
+Application initialization for Fuzzy Logic Editor
+"""
 
-from app.main_window import MainWindow
-from app.models.counter_model import CounterModel
-from app.utils.config import AppConfig
-from app.views.counter_view import CounterView
-from app.view_models.counter_view_model import CounterViewModel
+from app.services.logger_service import LoggerService
+from app.services.configuration_service import ConfigurationService
+from app.services.data_service import DataService
 
 
-def run() -> int:
-    """
-    Initializes the application and runs it.
+def initialize_application():
+    """Initialize the application and create services"""
+    # Create logger for initialization
+    logger = LoggerService()
+    logger.info("Fuzzy Logic Editor initialization started")
+    
+    # Initialize configuration
+    config_service = ConfigurationService(logger)
+    logger.info("Configuration service initialized")
+    
+    # Initialize data service
+    data_service = DataService(logger)
+    logger.info("Data service initialized")
+    
+    logger.info("Fuzzy Logic Editor initialization completed")
+    
+    return logger, config_service, data_service
 
-    Returns:
-        int: The exit status code.
-    """
-    app: QApplication = QApplication(sys.argv)
-    AppConfig.initialize()
 
-    window: MainWindow = MainWindow()
+def run():
+    """Legacy run function for backward compatibility"""
+    from PyQt6.QtWidgets import QApplication
+    import sys
+    
+    app = QApplication(sys.argv)
+    initialize_application()
+    
+    from app.main_window import MainWindow
+    window = MainWindow()
     window.show()
-    return sys.exit(app.exec())
+    
+    return app.exec()

@@ -1,0 +1,1 @@
+# Tests module for the PyQt MVVM application 

@@ -1,0 +1,18 @@
+{
+  "name": "Dark",
+  "description": "Dark theme for fuzzy logic editor",
+  "colors": {
+    "background": "#2d2d30",
+    "surface": "#1e1e1e",
+    "primary": "#0078d4",
+    "primary_hover": "#106ebe",
+    "secondary": "#3c3c3c",
+    "text": "#cccccc",
+    "text_secondary": "#999999",
+    "border": "#3e3e42",
+    "border_light": "#3e3e42",
+    "success": "#28a745",
+    "warning": "#ffc107",
+    "error": "#dc3545"
+  }
+} 

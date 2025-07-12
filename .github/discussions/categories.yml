@@ -1,0 +1,33 @@
+# GitHub Discussions Categories Configuration
+# This file defines the categories for GitHub Discussions
+
+categories:
+  - name: "General"
+    description: "General discussion about the project"
+    emoji: "💬"
+    color: "0E8A16"
+    
+  - name: "Q&A"
+    description: "Questions and answers about using the project"
+    emoji: "❓"
+    color: "D93F0B"
+    
+  - name: "Ideas"
+    description: "Suggestions and ideas for the project"
+    emoji: "💡"
+    color: "1D76DB"
+    
+  - name: "Show and tell"
+    description: "Show off your projects and implementations"
+    emoji: "🎉"
+    color: "FEF2C0"
+    
+  - name: "Announcements"
+    description: "Important announcements and updates"
+    emoji: "📢"
+    color: "FF0000"
+    
+  - name: "Help wanted"
+    description: "Looking for help with specific tasks"
+    emoji: "🆘"
+    color: "FFA500" 

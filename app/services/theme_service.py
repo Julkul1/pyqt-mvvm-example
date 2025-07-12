@@ -1,11 +1,11 @@
 from typing import Dict, Any, Optional
 from PyQt6.QtCore import QObject, pyqtSignal
 
-from app.core.interfaces import ILogger
+from app.core.interfaces import ILogger, IThemeService
 from app.themes.theme_manager import ThemeManager
 
 
-class ThemeService(QObject):
+class ThemeService(QObject, IThemeService):
     """Service for managing application themes"""
     
     theme_changed = pyqtSignal(str)  # Signal when theme changes

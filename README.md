@@ -127,14 +127,20 @@ pytest tests/ --cov=app --cov-report=html
 
 ### Code Quality
 ```bash
-# Linting
-flake8 app/ tests/
+# Using the management scripts
+python scripts/run.py dev check-all
 
-# Formatting
-black app/ tests/
+# Individual tools
+python scripts/run.py dev format      # Format with black + sort imports with isort
+python scripts/run.py dev sort-imports # Sort imports only
+python scripts/run.py dev lint        # Lint with flake8 + pylint
+python scripts/run.py dev type-check  # Type check with mypy
 
-# Type checking
-mypy app/
+# Direct tool usage
+black app/ tests/                     # Code formatting
+isort app/ tests/                     # Import sorting
+flake8 app/ tests/                    # Linting
+mypy app/                            # Type checking
 ```
 
 ### Build Application

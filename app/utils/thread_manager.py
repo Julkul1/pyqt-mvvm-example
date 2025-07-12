@@ -1,9 +1,9 @@
 from typing import Callable, Optional, Any
 from PyQt6.QtCore import QObject, QThread, pyqtSignal
-from app.core.interfaces import ILogger
+from app.core.interfaces import ILogger, IThreadManager
 
 
-class ThreadManager(QObject):
+class ThreadManager(QObject, IThreadManager):
     """Manages background threads for the application"""
     
     task_completed = pyqtSignal(object)  # Signal when task completes

@@ -18,10 +18,8 @@ template: |
   ## What's Changed
   $CHANGES
 
-  {% if $NEW_CONTRIBUTORS %}
   ## New Contributors
   $NEW_CONTRIBUTORS
-  {% endif %}
 
   ## Contributors
   $CONTRIBUTORS 

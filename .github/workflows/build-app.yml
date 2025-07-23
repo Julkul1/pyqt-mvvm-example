@@ -29,6 +29,7 @@ jobs:
           python main.py || true # Allow exit code since GUI apps may exit with nonzero
       - name: Bump app version
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        id: bump_version
         run: |
           VERSION=$(awk -F '=' '/version/ {print $2}' config.ini | tr -d ' ')
           IFS='.' read -r MAJOR MINOR PATCH <<< "$VERSION"
@@ -40,3 +41,25 @@ jobs:
           git add config.ini
           git commit -m "chore: bump app version to $NEW_VERSION [skip ci]"
           git push
+          echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Get version from config.ini
+        id: get_version
+        run: |
+          VERSION=$(awk -F '=' '/version/ {print $2}' config.ini | tr -d ' ')
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.get_version.outputs.version }}
+          name: Release v${{ steps.get_version.outputs.version }}
+          body: "Automated release for version v${{ steps.get_version.outputs.version }}"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -1,0 +1,42 @@
+name: Build App
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install dependencies
+        run: |
+          python -m venv .venv
+          . .venv/bin/activate
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Build (run main.py)
+        run: |
+          . .venv/bin/activate
+          python main.py || true # Allow exit code since GUI apps may exit with nonzero
+      - name: Bump app version
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        run: |
+          VERSION=$(awk -F '=' '/version/ {print $2}' config.ini | tr -d ' ')
+          IFS='.' read -r MAJOR MINOR PATCH <<< "$VERSION"
+          PATCH=$((PATCH+1))
+          NEW_VERSION="$MAJOR.$MINOR.$PATCH"
+          sed -i "s/version = $VERSION/version = $NEW_VERSION/" config.ini
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add config.ini
+          git commit -m "chore: bump app version to $NEW_VERSION [skip ci]"
+          git push

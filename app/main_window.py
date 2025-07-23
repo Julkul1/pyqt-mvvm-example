@@ -1,10 +1,8 @@
-from PyQt6.QtWidgets import QMainWindow, QWidget, QHBoxLayout
+from PyQt6.QtWidgets import QMainWindow
 
 from app.models.counter_model import CounterModel
 from app.utils.config import AppConfig
 from app.view_models.main_view_model import MainViewModel
-from app.views.counter_view import CounterView
-from app.view_models.counter_view_model import CounterViewModel
 from app.views.main_view import MainView
 
 
@@ -24,7 +22,6 @@ class MainWindow(QMainWindow):
         # Window-Settings
         self.setWindowTitle(AppConfig.app_name())
         self.resize(AppConfig.window_width(), AppConfig.window_height())
-
 
         model = CounterModel()
         view_model = MainViewModel(model)

@@ -7,6 +7,7 @@ class AppConfig:
     """
     Configuration File
     """
+
     _config = configparser.ConfigParser()
     _initialized = False
 
@@ -19,10 +20,12 @@ class AppConfig:
         Perform any necessary initializations here, e.g.:
         - Loading settings from a file
         """
+
     def get_var(self) -> None:
         """
         Get the Var.
         """
+
     @classmethod
     def app_name(cls):
         return cls._config.get("app", "name", fallback="Default App")

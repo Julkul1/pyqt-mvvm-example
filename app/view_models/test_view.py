@@ -1,9 +1,5 @@
-import inspect
-import time
+from PyQt6.QtCore import QObject
 
-from PyQt6.QtCore import QObject, pyqtSignal, QThread, pyqtProperty
-
-from app.utils.worker import Worker
 
 class TestViewModel(QObject):
     # Signals

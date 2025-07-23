@@ -1,14 +1,12 @@
-import inspect
-import time
-
-from PyQt6.QtCore import QObject, pyqtSignal, QThread, pyqtProperty
+from PyQt6.QtCore import QObject, QThread, pyqtSignal
 
 from app.utils.worker import Worker
+
 
 class CounterViewModel(QObject):
     # Signals
     count_changed = pyqtSignal(int)  # Signal to update the count in the views
-    can_increment_changed  = pyqtSignal(bool)
+    can_increment_changed = pyqtSignal(bool)
 
     def __init__(self, model):
         # Initialize View Model and Model

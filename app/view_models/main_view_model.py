@@ -1,13 +1,9 @@
-import inspect
-import time
-
 from PyQt6.QtCore import QObject, pyqtSignal
 from PyQt6.QtWidgets import QWidget
 
 from app.view_models.counter_view_model import CounterViewModel
 from app.view_models.test_view import TestViewModel
 from app.views.counter_view import CounterView
-from app.views.main_view import MainView
 from app.views.test_view import TestView
 
 
@@ -24,8 +20,7 @@ class MainViewModel(QObject):
         self.home_view = CounterView(self.home_vm)
 
         self.test_vm = TestViewModel(self._model)
-        self.test_view = TestView(self.test_vm)
-
+        self.test_view = TestView(self._model)
 
     def set_current_view(self, name):
         if name == "home":

@@ -1,4 +1,4 @@
-from PyQt6.QtWidgets import QWidget, QVBoxLayout, QLabel, QPushButton
+from PyQt6.QtWidgets import QLabel, QPushButton, QVBoxLayout, QWidget
 
 from app.utils.utils import load_stylesheet
 
@@ -25,11 +25,11 @@ class CounterView(QWidget):
         self.setLayout(self.layout)
 
         # Create Widgets
-        self.label = QLabel('0')  # Label to show the count
-        self.button = QPushButton('Increment')  # Button to increment the count
+        self.label = QLabel("0")  # Label to show the count
+        self.button = QPushButton("Increment")  # Button to increment the count
 
         # Bind Commands
-        self.button.clicked.connect(self._view_model.increment)  # Connect button click to ViewModel
+        self.button.clicked.connect(self._view_model.increment)
 
         # Set Style
         self.button.setStyleSheet(self.stylesheet)

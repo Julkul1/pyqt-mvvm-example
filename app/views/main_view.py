@@ -1,6 +1,10 @@
-from PyQt6.QtWidgets import QWidget, QVBoxLayout, QLabel, QPushButton, QHBoxLayout, QStackedWidget
-
-from app.utils.utils import load_stylesheet
+from PyQt6.QtWidgets import (
+    QHBoxLayout,
+    QPushButton,
+    QStackedWidget,
+    QVBoxLayout,
+    QWidget,
+)
 
 
 class MainView(QWidget):
@@ -8,8 +12,6 @@ class MainView(QWidget):
         # Initialize View and View Model
         super().__init__()
         self._view_model = view_model
-
-        # Initialize Stylesheet
 
         # Connect Signals to Slots
         self._view_model.current_view_changed.connect(self.change_view)
@@ -26,10 +28,6 @@ class MainView(QWidget):
         navbar_layout = self.init_navbar()
         self.stacked_widget = QStackedWidget()
 
-        # Bind Commands
-
-        # Set Style
-
         # Add Widgets to View
         self.main_layout.addWidget(navbar_layout)
         self.main_layout.addWidget(self.stacked_widget)
@@ -43,8 +41,12 @@ class MainView(QWidget):
         self.button_settings = QPushButton("Settings")
 
         # Bind Commands
-        self.button_home.clicked.connect(lambda: self._view_model.set_current_view("home"))
-        self.button_settings.clicked.connect(lambda: self._view_model.set_current_view("settings"))
+        self.button_home.clicked.connect(
+            lambda: self._view_model.set_current_view("home")
+        )
+        self.button_settings.clicked.connect(
+            lambda: self._view_model.set_current_view("settings")
+        )
         self.button_home.setStyleSheet("""
             background-color: #00FF00;  /* optional background */
             border-bottom: 2px solid #cccccc;  /* bottom border only */

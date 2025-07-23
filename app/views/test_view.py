@@ -1,22 +1,24 @@
+"""Test view for demonstration purposes."""
+
 from PyQt6.QtWidgets import QHBoxLayout, QLabel, QWidget
 
 
 class TestView(QWidget):
-    def __init__(self, view_model):
-        # Initialize View and View Model
-        super().__init__()
-        self._view_model = view_model
+    """A simple test view for demonstration purposes."""
 
-        # Initialize the UI
+    def __init__(self, view_model):
+        """Initialize the test view.
+
+        Args:
+            view_model: The view model for the test view.
+        """
+        super().__init__()
+        self.view_model = view_model
         self.init_ui()
 
     def init_ui(self):
-        # Set Layout
-        self.main_layout = QHBoxLayout()  # Vertical layout
-        self.setLayout(self.main_layout)
-
-        # Create Widgets
-        self.label = QLabel("Bruh")
-
-        # Add Widgets to View
-        self.main_layout.addWidget(self.label)
+        """Initialize the UI components for the test view."""
+        layout = QHBoxLayout()
+        label = QLabel("Test View")
+        layout.addWidget(label)
+        self.setLayout(layout)

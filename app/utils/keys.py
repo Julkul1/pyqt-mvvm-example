@@ -1,3 +1,5 @@
+"""Key utilities for the application."""
+
 from pathlib import Path
 
 # Root of the project

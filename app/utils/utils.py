@@ -1,14 +1,33 @@
+"""Utility functions for the application."""
+
+import os
 import sys
-from pathlib import Path
 
 
-def resource_path(relative_path):
-    """Get absolute path to resource, works for dev and for PyInstaller."""
-    if hasattr(sys, "_MEIPASS"):
-        return Path(sys._MEIPASS) / relative_path
-    return Path(relative_path)
+def resource_path(relative_path: str) -> str:
+    """Get absolute path to resource, works for dev and for PyInstaller.
+
+    Args:
+        relative_path (str): The relative path to the resource.
+
+    Returns:
+        str: The absolute path to the resource.
+    """
+    try:
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+    return os.path.join(base_path, relative_path)
 
 
 def load_stylesheet(filename: str) -> str:
-    stylesheet_path = resource_path(f"app/views/{filename}")
-    return stylesheet_path.read_text()
+    """Load a QSS stylesheet from a file.
+
+    Args:
+        filename (str): The path to the QSS file.
+
+    Returns:
+        str: The contents of the stylesheet.
+    """
+    with open(filename, "r") as f:
+        return f.read()

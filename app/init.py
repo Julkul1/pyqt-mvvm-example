@@ -1,3 +1,5 @@
+"""Initialization and entry point for the application."""
+
 import sys
 
 from PyQt6.QtWidgets import QApplication
@@ -7,8 +9,7 @@ from app.utils.config import AppConfig
 
 
 def run() -> int:
-    """
-    Initializes the application and runs it.
+    """Initializes the application and runs it.
 
     Returns:
         int: The exit status code.

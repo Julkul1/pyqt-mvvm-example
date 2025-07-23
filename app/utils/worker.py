@@ -1,38 +1,24 @@
-import inspect
+"""Worker utilities for running functions in background threads."""
 
-from PyQt6.QtCore import QObject, pyqtSignal
-
-from app.utils.keys import PROGRESS_CALLBACK
+from PyQt6.QtCore import QObject
 
 
 class Worker(QObject):
-    """
-    General-purpose worker for running any function in a background thread,
-    with support for result, error, progress, and finished signals.
-    """
-
-    finished = pyqtSignal()
-    error = pyqtSignal(Exception)
-    result = pyqtSignal(object)
-    progress = pyqtSignal(int)
+    """General-purpose worker for running any function in a background thread."""
 
     def __init__(self, fn, *args, **kwargs):
+        """Initialize the worker.
+
+        Args:
+            fn: The function to run.
+            *args: Positional arguments for the function.
+            **kwargs: Keyword arguments for the function.
+        """
         super().__init__()
         self.fn = fn
         self.args = args
         self.kwargs = kwargs
 
-        signature = inspect.signature(fn)
-        if PROGRESS_CALLBACK in signature.parameters:
-            self.kwargs[PROGRESS_CALLBACK] = (
-                self.progress.emit  # Inject progress callback if used
-            )
-
     def run(self):
-        try:
-            result = self.fn(*self.args, **self.kwargs)
-            self.result.emit(result)
-        except Exception as e:
-            self.error.emit(e)
-        finally:
-            self.finished.emit()
+        """Run the worker function in a background thread."""
+        self.fn(*self.args, **self.kwargs)

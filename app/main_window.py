@@ -8,7 +8,7 @@ from app.models.counter_model import CounterModel
 from app.utils.config import AppConfig
 from app.utils.i18n import init_i18n
 from app.view_models.main_view_model import MainViewModel
-from app.views.main_view import MainView
+from app.views.main_view.main_view import MainView
 
 
 class MainWindow(QMainWindow):

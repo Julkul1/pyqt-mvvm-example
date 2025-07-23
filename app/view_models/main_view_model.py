@@ -5,9 +5,9 @@ from PyQt6.QtWidgets import QWidget
 
 from app.utils.i18n import set_language
 from app.view_models.counter_view_model import CounterViewModel
-from app.view_models.test_view import TestViewModel
-from app.views.counter_view import CounterView
-from app.views.test_view import TestView
+from app.view_models.test_view_model import TestViewModel
+from app.views.counter_view.counter_view import CounterView
+from app.views.test_view.test_view import TestView
 
 
 class MainViewModel(QObject):

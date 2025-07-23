@@ -17,4 +17,4 @@ MODELS_DIR = APP_DIR / "models"
 CONFIG_PATH = ROOT_DIR / "config.ini"
 
 # Other Constants
-PROGRESS_CALLBACK = 'progress_callback'
+PROGRESS_CALLBACK = "progress_callback"

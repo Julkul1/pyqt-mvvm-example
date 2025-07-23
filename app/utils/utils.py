@@ -1,5 +1,3 @@
-from pathlib import Path
-
 from app.utils.keys import VIEWS_DIR
 
 

@@ -1,6 +1,4 @@
-from PyQt6.QtWidgets import QWidget, QVBoxLayout, QLabel, QPushButton, QHBoxLayout, QStackedWidget
-
-from app.utils.utils import load_stylesheet
+from PyQt6.QtWidgets import QHBoxLayout, QLabel, QWidget
 
 
 class TestView(QWidget):
@@ -8,10 +6,6 @@ class TestView(QWidget):
         # Initialize View and View Model
         super().__init__()
         self._view_model = view_model
-
-        # Initialize Stylesheet
-
-        # Connect Signals to Slots
 
         # Initialize the UI
         self.init_ui()
@@ -23,10 +17,6 @@ class TestView(QWidget):
 
         # Create Widgets
         self.label = QLabel("Bruh")
-
-        # Bind Commands
-
-        # Set Style
 
         # Add Widgets to View
         self.main_layout.addWidget(self.label)

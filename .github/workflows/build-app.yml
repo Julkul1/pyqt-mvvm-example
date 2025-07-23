@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
         with:
@@ -20,35 +20,37 @@ jobs:
       - name: Install dependencies
         run: |
           python -m venv .venv
-          . .venv/bin/activate
+          .\.venv\Scripts\activate
           python -m pip install --upgrade pip
           pip install -r requirements.txt
       - name: Build (run main.py)
         run: |
-          . .venv/bin/activate
-          python main.py || true # Allow exit code since GUI apps may exit with nonzero
+          .\.venv\Scripts\activate
+          python main.py || exit 0 # Allow exit code since GUI apps may exit with nonzero
       - name: Build executable with PyInstaller
         run: |
-          . .venv/bin/activate
+          .\.venv\Scripts\activate
           pyinstaller --onefile main.py
       - name: Bump app version
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         id: bump_version
         run: |
-          VERSION=$(awk -F '=' '/version/ {print $2}' config.ini | tr -d ' ')
-          IFS='.' read -r MAJOR MINOR PATCH <<< "$VERSION"
-          PATCH=$((PATCH+1))
-          NEW_VERSION="$MAJOR.$MINOR.$PATCH"
-          sed -i "s/version = $VERSION/version = $NEW_VERSION/" config.ini
+          $VERSION = (Select-String -Path config.ini -Pattern '^version =').Line.Split('=')[1].Trim()
+          $parts = $VERSION -split '\.'
+          $MAJOR = $parts[0]
+          $MINOR = $parts[1]
+          $PATCH = [int]$parts[2] + 1
+          $NEW_VERSION = "$MAJOR.$MINOR.$PATCH"
+          (Get-Content config.ini) -replace "version = $VERSION", "version = $NEW_VERSION" | Set-Content config.ini
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add config.ini
           git commit -m "chore: bump app version to $NEW_VERSION [skip ci]"
           git push
-          echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
+          echo "new_version=$NEW_VERSION" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
   release:
     needs: build
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     steps:
       - uses: actions/checkout@v4
@@ -57,8 +59,8 @@ jobs:
       - name: Get version from config.ini
         id: get_version
         run: |
-          VERSION=$(awk -F '=' '/version/ {print $2}' config.ini | tr -d ' ')
-          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          $VERSION = (Select-String -Path config.ini -Pattern '^version =').Line.Split('=')[1].Trim()
+          echo "version=$VERSION" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
       - name: Draft Release Notes
         uses: release-drafter/release-drafter@v6
         id: create_release_notes
@@ -73,5 +75,6 @@ jobs:
           name: Release v${{ steps.get_version.outputs.version }}
           body: ${{ steps.create_release_notes.outputs.body }}
           files: dist/main.exe
+          draft: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

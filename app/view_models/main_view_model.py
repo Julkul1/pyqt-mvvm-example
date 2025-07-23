@@ -1,5 +1,7 @@
 """Main view model for the main view."""
 
+from typing import Any
+
 from PyQt6.QtCore import QObject, pyqtSignal
 from PyQt6.QtWidgets import QWidget
 
@@ -15,8 +17,13 @@ class MainViewModel(QObject):
 
     current_view_changed = pyqtSignal(QWidget)
     language_changed = pyqtSignal(str)
+    _model: Any
+    home_vm: CounterViewModel
+    home_view: CounterView
+    test_vm: TestViewModel
+    test_view: TestView
 
-    def __init__(self, model):
+    def __init__(self, model: Any) -> None:
         """Initialize the main view model.
 
         Args:
@@ -31,7 +38,7 @@ class MainViewModel(QObject):
         self.test_vm = TestViewModel(self._model)
         self.test_view = TestView(self._model)
 
-    def set_current_view(self, name):
+    def set_current_view(self, name: str) -> None:
         """Set the current view based on the given name.
 
         Args:
@@ -42,7 +49,7 @@ class MainViewModel(QObject):
         elif name == "settings":
             self.current_view_changed.emit(self.test_view)
 
-    def set_language(self, language_code):
+    def set_language(self, language_code: str) -> None:
         """Set the application language.
 
         Args:

@@ -1,12 +1,18 @@
 """Worker utilities for running functions in background threads."""
 
+from typing import Any, Callable
+
 from PyQt6.QtCore import QObject
 
 
 class Worker(QObject):
     """General-purpose worker for running any function in a background thread."""
 
-    def __init__(self, fn, *args, **kwargs):
+    fn: Callable[..., Any]
+    args: tuple[Any, ...]
+    kwargs: dict[str, Any]
+
+    def __init__(self, fn: Callable[..., Any], *args: Any, **kwargs: Any) -> None:
         """Initialize the worker.
 
         Args:
@@ -19,6 +25,6 @@ class Worker(QObject):
         self.args = args
         self.kwargs = kwargs
 
-    def run(self):
+    def run(self) -> None:
         """Run the worker function in a background thread."""
         self.fn(*self.args, **self.kwargs)

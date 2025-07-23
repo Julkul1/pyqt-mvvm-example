@@ -2,12 +2,15 @@
 
 import json
 import os
+from typing import Dict
 
 
 class I18nManager:
     """Manager for loading and providing translations from JSON files."""
 
-    def __init__(self, locales_path: str, default_language: str = "en"):
+    translations: Dict[str, str]
+
+    def __init__(self, locales_path: str, default_language: str = "en") -> None:
         """Initialize the I18nManager.
 
         Args:
@@ -19,7 +22,7 @@ class I18nManager:
         self.translations = {}
         self.load_language(default_language)
 
-    def available_languages(self):
+    def available_languages(self) -> list[str]:
         """Get a list of available language codes.
 
         Returns:
@@ -34,7 +37,7 @@ class I18nManager:
                     langs.append(lang_dir)
         return langs
 
-    def load_language(self, language_code: str):
+    def load_language(self, language_code: str) -> bool:
         """Load translations for the given language code.
 
         Args:

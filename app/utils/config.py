@@ -2,6 +2,7 @@
 
 import configparser
 import os
+from typing import Optional
 
 CONFIG_PATH = os.path.join(os.path.dirname(__file__), "../../config.ini")
 
@@ -9,8 +10,10 @@ CONFIG_PATH = os.path.join(os.path.dirname(__file__), "../../config.ini")
 class AppConfig:
     """Application configuration loader and accessor."""
 
+    config: Optional[configparser.ConfigParser] = None
+
     @classmethod
-    def initialize(cls, path=CONFIG_PATH) -> None:
+    def initialize(cls, path: str = CONFIG_PATH) -> None:
         """Initialize configuration from the given path.
 
         Args:
@@ -29,11 +32,16 @@ class AppConfig:
 
         Returns:
             str: The value from the config file.
+
+        Raises:
+            RuntimeError: If AppConfig is not initialized.
         """
+        if cls.config is None:
+            raise RuntimeError("AppConfig not initialized")
         return cls.config.get(section, key)
 
     @classmethod
-    def app_name(cls):
+    def app_name(cls) -> str:
         """Get the application name.
 
         Returns:
@@ -42,7 +50,7 @@ class AppConfig:
         return cls.get_var("app", "name")
 
     @classmethod
-    def window_width(cls):
+    def window_width(cls) -> int:
         """Get the window width.
 
         Returns:
@@ -51,7 +59,7 @@ class AppConfig:
         return int(cls.get_var("window", "width"))
 
     @classmethod
-    def window_height(cls):
+    def window_height(cls) -> int:
         """Get the window height.
 
         Returns:

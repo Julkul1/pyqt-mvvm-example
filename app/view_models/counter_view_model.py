@@ -1,5 +1,7 @@
 """Counter view model for the counter view."""
 
+from typing import Any
+
 from PyQt6.QtCore import QObject, pyqtSignal
 
 
@@ -8,8 +10,9 @@ class CounterViewModel(QObject):
 
     count_changed = pyqtSignal(int)  # Signal to update the count in the views
     can_increment_changed = pyqtSignal(bool)
+    model: Any
 
-    def __init__(self, model):
+    def __init__(self, model: Any) -> None:
         """Initialize the counter view model.
 
         Args:
@@ -18,6 +21,6 @@ class CounterViewModel(QObject):
         super().__init__()
         self.model = model
 
-    def increment(self):
+    def increment(self) -> None:
         """Increment the counter in the model."""
         self.model.increment()

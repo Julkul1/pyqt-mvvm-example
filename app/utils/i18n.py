@@ -1,11 +1,13 @@
 """i18n utilities for translation management."""
 
+from typing import Callable, Optional
+
 from app.utils.i18n_manager import I18nManager
 
-_manager = None
+_manager: Optional[I18nManager] = None
 
 
-def init_i18n(locales_path, default_language="en"):
+def init_i18n(locales_path: str, default_language: str = "en") -> None:
     """Initialize the global I18nManager.
 
     Args:
@@ -16,7 +18,7 @@ def init_i18n(locales_path, default_language="en"):
     _manager = I18nManager(locales_path, default_language)
 
 
-def set_language(language_code):
+def set_language(language_code: str) -> None:
     """Set the current language for translations.
 
     Args:
@@ -26,7 +28,7 @@ def set_language(language_code):
         _manager.load_language(language_code)
 
 
-def use_translate():
+def use_translate() -> Callable[[str], str]:
     """Get the translation function for the current language.
 
     Returns:
@@ -37,7 +39,7 @@ def use_translate():
     return lambda key: key
 
 
-def get_manager():
+def get_manager() -> Optional[I18nManager]:
     """Get the current I18nManager instance.
 
     Returns:

@@ -1,5 +1,7 @@
 """Main view for the application UI."""
 
+from typing import Any
+
 from PyQt6.QtWidgets import (
     QComboBox,
     QHBoxLayout,
@@ -15,7 +17,15 @@ from app.utils.i18n import use_translate
 class MainView(QWidget):
     """Main view for the application UI."""
 
-    def __init__(self, view_model):
+    _view_model: Any
+    t: Any
+    main_layout: QVBoxLayout
+    stacked_widget: QStackedWidget
+    button_home: QPushButton
+    button_settings: QPushButton
+    language_selector: QComboBox
+
+    def __init__(self, view_model: Any) -> None:
         """Initialize the main view.
 
         Args:
@@ -33,7 +43,7 @@ class MainView(QWidget):
         # Initialize the UI
         self.init_ui()
 
-    def init_ui(self):
+    def init_ui(self) -> None:
         """Initialize the UI components for the main view."""
         self.main_layout = QVBoxLayout()  # Vertical layout
         self.setLayout(self.main_layout)
@@ -46,7 +56,7 @@ class MainView(QWidget):
         self.main_layout.addWidget(navbar_layout)
         self.main_layout.addWidget(self.stacked_widget)
 
-    def init_navbar(self):
+    def init_navbar(self) -> QWidget:
         """Initialize the navigation bar for the main view.
 
         Returns:
@@ -88,10 +98,12 @@ class MainView(QWidget):
         self.button_settings.clicked.connect(
             lambda: self._view_model.set_current_view("settings")
         )
-        self.button_home.setStyleSheet("""
+        self.button_home.setStyleSheet(
+            """
             background-color: #00FF00;  /* optional background */
             border-bottom: 2px solid #cccccc;  /* bottom border only */
-        """)
+        """
+        )
 
         # Add Widgets to Layout
         navbar_layout.addWidget(self.button_home)
@@ -103,14 +115,16 @@ class MainView(QWidget):
         navbar_widget = QWidget()
         navbar_widget.setLayout(navbar_layout)
         navbar_widget.setFixedHeight(100)
-        navbar_widget.setStyleSheet("""
+        navbar_widget.setStyleSheet(
+            """
             background-color: #F0F0F0;  /* optional background */
             border-bottom: 2px solid #cccccc;  /* bottom border only */
-        """)
+        """
+        )
 
         return navbar_widget
 
-    def change_view(self, widget: QWidget):
+    def change_view(self, widget: QWidget) -> None:
         """Change the current view in the stacked widget.
 
         Args:
@@ -122,7 +136,7 @@ class MainView(QWidget):
             index = self.stacked_widget.indexOf(widget)
         self.stacked_widget.setCurrentIndex(index)
 
-    def update_translations(self, language_code):
+    def update_translations(self, language_code: str) -> None:
         """Update UI text when language changes.
 
         Args:

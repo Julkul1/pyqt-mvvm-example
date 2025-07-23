@@ -15,7 +15,7 @@ jobs:
         include:
           - os: windows-latest
             activate: .\.venv\Scripts\activate
-            add_data: "app/views/counter_view.qss;app/views"
+            add_data: '"app/views/counter_view.qss;app/views"'
             binary: dist/main.exe
           - os: ubuntu-latest
             activate: . .venv/bin/activate

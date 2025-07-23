@@ -12,6 +12,15 @@ jobs:
     strategy:
       matrix:
         os: [windows-latest, ubuntu-latest]
+        include:
+          - os: windows-latest
+            activate: .\.venv\Scripts\activate
+            add_data: "app/views/counter_view.qss;app/views"
+            binary: dist/main.exe
+          - os: ubuntu-latest
+            activate: . .venv/bin/activate
+            add_data: "app/views/counter_view.qss:app/views"
+            binary: dist/main
     steps:
       - uses: actions/checkout@v4
         with:
@@ -23,20 +32,18 @@ jobs:
       - name: Install dependencies
         run: |
           python -m venv .venv
-          . .venv/Scripts/activate || . .venv/bin/activate
+          ${{ matrix.activate }}
           python -m pip install --upgrade pip
           pip install -r requirements.txt
       - name: Build executable with PyInstaller
         run: |
-          . .venv/Scripts/activate || . .venv/bin/activate
-          pyinstaller --onefile --add-data "app/views/counter_view.qss;app/views" main.py
+          ${{ matrix.activate }}
+          pyinstaller --onefile --add-data=${{ matrix.add_data }} main.py
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: ${{ runner.os }}-binary
-          path: |
-            dist/main.exe
-            dist/main
+          path: ${{ matrix.binary }}
   release:
     needs: build
     runs-on: ubuntu-latest

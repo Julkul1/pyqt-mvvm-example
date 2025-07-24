@@ -38,7 +38,7 @@ jobs:
       - name: Build executable with PyInstaller
         run: |
           ${{ matrix.activate }}
-          pyinstaller --onefile --add-data=${{ matrix.add_data }} main.py
+          pyinstaller main.spec
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:

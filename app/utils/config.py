@@ -1,39 +1,66 @@
 import configparser
+import os
+from typing import Optional
 
-from app.utils.keys import CONFIG_PATH
+CONFIG_PATH = os.path.join(os.path.dirname(__file__), "../../config.ini")
 
 
 class AppConfig:
-    """
-    Configuration File
-    """
+    """Application configuration loader and accessor."""
 
-    _config = configparser.ConfigParser()
-    _initialized = False
+    config: Optional[configparser.ConfigParser] = None
 
     @classmethod
-    def initialize(cls, path=CONFIG_PATH) -> None:
-        if not cls._initialized:
-            cls._config.read(path)
-            cls._initialized = True
-        """
-        Perform any necessary initializations here, e.g.:
-        - Loading settings from a file
-        """
+    def initialize(cls, path: str = CONFIG_PATH) -> None:
+        """Initialize configuration from the given path.
 
-    def get_var(self) -> None:
+        Args:
+            path (str): The path to the configuration file.
         """
-        Get the Var.
-        """
+        cls.config = configparser.ConfigParser()
+        cls.config.read(path)
 
     @classmethod
-    def app_name(cls):
-        return cls._config.get("app", "name", fallback="Default App")
+    def get_var(cls, section: str, key: str) -> str:
+        """Get the variable from the config file.
+
+        Args:
+            section (str): The section in the config file.
+            key (str): The key in the section.
+
+        Returns:
+            str: The value from the config file.
+
+        Raises:
+            RuntimeError: If AppConfig is not initialized.
+        """
+        if cls.config is None:
+            raise RuntimeError("AppConfig not initialized")
+        return cls.config.get(section, key)
 
     @classmethod
-    def window_width(cls):
-        return cls._config.getint("window", "width", fallback=800)
+    def app_name(cls) -> str:
+        """Get the application name.
+
+        Returns:
+            str: The application name.
+        """
+        return cls.get_var("app", "name")
 
     @classmethod
-    def window_height(cls):
-        return cls._config.getint("window", "height", fallback=600)
+    def window_width(cls) -> int:
+        """Get the window width.
+
+        Returns:
+            int: The window width.
+        """
+        return int(cls.get_var("window", "width"))
+
+    @classmethod
+    def window_height(cls) -> int:
+        """Get the window height.
+
+        Returns:
+            int: The window height.
+        """
+        return int(cls.get_var("window", "height"))

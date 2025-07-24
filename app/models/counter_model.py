@@ -1,10 +1,18 @@
+"""Counter model for the application."""
+
 import time
 
 
 class CounterModel:
-    def __init__(self):
-        self.count = 0  # Initialize the counter to 0
+    """Model for counting operations."""
 
-    def increment(self):
-        self.count += 1  # Increment the counter
-        time.sleep(1)
+    count: int
+
+    def __init__(self) -> None:
+        """Initialize the counter model."""
+        self.count = 0
+
+    def increment(self) -> None:
+        """Increment the counter by 1."""
+        self.count += 1
+        time.sleep(0.1)

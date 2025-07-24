@@ -5,7 +5,7 @@
 
 /* Base styling */
 QWidget {
-    background-color: #f0f0f0;
+    background-color: #921f1f;
     color: #333333;
 }
 

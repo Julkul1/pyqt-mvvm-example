@@ -17,6 +17,7 @@
     "**/.mypy_cache": true,
     "**/.idea": true,
     "**/__pycache__": true,
+    "**/__init__.py": true,
     "**/.venv": true,
     "**/venv": true,
     "**/.env": true,
@@ -32,5 +33,6 @@
     "main_view": "components",
     "counter_view": "components",
     "test_view": "components"
-  }
+  },
+  "pydocstyle.ignore": ["D100", "D104"]
 } 

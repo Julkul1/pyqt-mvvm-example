@@ -1,17 +1,15 @@
-"""i18n manager for loading and providing translations from JSON files."""
-
 import json
 import os
 from typing import Dict
 
 
-class I18nManager:
+class TranslateManager:
     """Manager for loading and providing translations from JSON files."""
 
     translations: Dict[str, str]
 
     def __init__(self, locales_path: str, default_language: str = "en") -> None:
-        """Initialize the I18nManager.
+        """Initialize the TranslateManager.
 
         Args:
             locales_path (str): Path to the locales directory.
@@ -28,7 +26,7 @@ class I18nManager:
         Returns:
             list: A list of available language codes.
         """
-        langs = []
+        langs: list[str] = []
         for lang_dir in os.listdir(self.locales_path):
             lang_path = os.path.join(self.locales_path, lang_dir)
             if os.path.isdir(lang_path):

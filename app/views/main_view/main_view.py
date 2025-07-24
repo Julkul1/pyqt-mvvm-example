@@ -1,7 +1,3 @@
-"""Main view for the application UI."""
-
-from typing import Any
-
 from PyQt6.QtWidgets import (
     QComboBox,
     QHBoxLayout,
@@ -11,29 +7,30 @@ from PyQt6.QtWidgets import (
     QWidget,
 )
 
-from app.utils.i18n import use_translate
+from app.view_models.main_view_model import MainViewModel
+from app.views.base_view import BaseView
 
 
-class MainView(QWidget):
+class MainView(BaseView):
     """Main view for the application UI."""
 
-    _view_model: Any
-    t: Any
-    main_layout: QVBoxLayout
-    stacked_widget: QStackedWidget
-    button_home: QPushButton
-    button_settings: QPushButton
-    language_selector: QComboBox
+    _view_model: MainViewModel
+    _main_layout: QVBoxLayout
+    _stacked_widget: QStackedWidget
+    _button_home: QPushButton
+    _button_settings: QPushButton
+    _language_selector: QComboBox
+    _theme_selector: QComboBox
 
-    def __init__(self, view_model: Any) -> None:
+    def __init__(self, view_model: MainViewModel) -> None:
         """Initialize the main view.
 
         Args:
-            view_model: The main view model.
+            view_model (MainViewModel): The view model for the main view.
         """
-        super().__init__()
+        super().__init__(qss_filename="main_view/main_view.qss")
         self._view_model = view_model
-        self.t = use_translate()
+        self.t = self.context.translate
 
         # Connect Signals to Slots
         self._view_model.current_view_changed.connect(self.change_view)
@@ -45,16 +42,16 @@ class MainView(QWidget):
 
     def init_ui(self) -> None:
         """Initialize the UI components for the main view."""
-        self.main_layout = QVBoxLayout()  # Vertical layout
-        self.setLayout(self.main_layout)
+        self._main_layout = QVBoxLayout()  # Vertical layout
+        self.setLayout(self._main_layout)
 
         # Create Widgets
         navbar_layout = self.init_navbar()
-        self.stacked_widget = QStackedWidget()
+        self._stacked_widget = QStackedWidget()
 
         # Add Widgets to View
-        self.main_layout.addWidget(navbar_layout)
-        self.main_layout.addWidget(self.stacked_widget)
+        self._main_layout.addWidget(navbar_layout)
+        self._main_layout.addWidget(self._stacked_widget)
 
     def init_navbar(self) -> QWidget:
         """Initialize the navigation bar for the main view.
@@ -65,58 +62,46 @@ class MainView(QWidget):
         navbar_layout = QHBoxLayout()
 
         # Create Widgets
-        self.button_home = QPushButton(self.t("Home"))
-        self.button_settings = QPushButton(self.t("Settings"))
+        self._button_home = QPushButton(self.t(self._view_model.home_label))
+        self._button_settings = QPushButton(self.t(self._view_model.settings_label))
 
         # Language selector
-        self.language_selector = QComboBox()
-        # Example: populate with available languages
-        import os
-
-        locales_path = os.path.join(
-            os.path.dirname(os.path.dirname(os.path.dirname(__file__))),
-            "assets",
-            "locales",
+        self._language_selector = QComboBox()
+        self._language_selector.addItems(self._view_model.available_languages)
+        self._language_selector.currentTextChanged.connect(
+            self._view_model.set_language
         )
-        langs = []
-        if os.path.exists(locales_path):
-            langs = [
-                d
-                for d in os.listdir(locales_path)
-                if os.path.isdir(os.path.join(locales_path, d))
-            ]
-        if langs:
-            self.language_selector.addItems(langs)
-        else:
-            self.language_selector.addItems(["en", "pl"])
-        self.language_selector.currentTextChanged.connect(self._view_model.set_language)
+
+        # Theme selector
+        self._theme_selector = QComboBox()
+        self._theme_selector.addItems(self._view_model.available_themes)
+        self._theme_selector.currentTextChanged.connect(self._view_model.set_theme)
+        # Set current theme if available
+        current_theme = self._view_model.current_theme
+        if current_theme:
+            idx = self._theme_selector.findText(current_theme)
+            if idx >= 0:
+                self._theme_selector.setCurrentIndex(idx)
 
         # Bind Commands
-        self.button_home.clicked.connect(
+        self._button_home.clicked.connect(
             lambda: self._view_model.set_current_view("home")
         )
-        self.button_settings.clicked.connect(
+        self._button_settings.clicked.connect(
             lambda: self._view_model.set_current_view("settings")
         )
-        self.button_home.setStyleSheet("""
-            background-color: #00FF00;  /* optional background */
-            border-bottom: 2px solid #cccccc;  /* bottom border only */
-        """)
 
         # Add Widgets to Layout
-        navbar_layout.addWidget(self.button_home)
-        navbar_layout.addWidget(self.button_settings)
+        navbar_layout.addWidget(self._button_home)
+        navbar_layout.addWidget(self._button_settings)
         navbar_layout.addStretch()
-        navbar_layout.addWidget(self.language_selector)
+        navbar_layout.addWidget(self._language_selector)
+        navbar_layout.addWidget(self._theme_selector)
 
         # Encapsulate in QWidget
         navbar_widget = QWidget()
         navbar_widget.setLayout(navbar_layout)
         navbar_widget.setFixedHeight(100)
-        navbar_widget.setStyleSheet("""
-            background-color: #F0F0F0;  /* optional background */
-            border-bottom: 2px solid #cccccc;  /* bottom border only */
-        """)
 
         return navbar_widget
 
@@ -126,11 +111,11 @@ class MainView(QWidget):
         Args:
             widget (QWidget): The widget to display.
         """
-        index = self.stacked_widget.indexOf(widget)
+        index = self._stacked_widget.indexOf(widget)
         if index == -1:
-            self.stacked_widget.addWidget(widget)
-            index = self.stacked_widget.indexOf(widget)
-        self.stacked_widget.setCurrentIndex(index)
+            self._stacked_widget.addWidget(widget)
+            index = self._stacked_widget.indexOf(widget)
+        self._stacked_widget.setCurrentIndex(index)
 
     def update_translations(self, language_code: str) -> None:
         """Update UI text when language changes.
@@ -138,5 +123,5 @@ class MainView(QWidget):
         Args:
             language_code (str): The new language code.
         """
-        self.button_home.setText(self.t("Home"))
-        self.button_settings.setText(self.t("Settings"))
+        self._button_home.setText(self.t(self._view_model.home_label))
+        self._button_settings.setText(self.t(self._view_model.settings_label))

@@ -1,5 +1,3 @@
-"""Worker utilities for running functions in background threads."""
-
 from typing import Any, Callable
 
 from PyQt6.QtCore import QObject

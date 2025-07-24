@@ -1,5 +1,3 @@
-"""Configuration utilities for the application."""
-
 import configparser
 import os
 from typing import Optional

@@ -42,5 +42,6 @@ Write-Host "Activating virtual environment and installing requirements..."
 # Install pre-commit hooks
 Write-Host "Installing pre-commit hooks..."
 .\.venv\Scripts\python.exe -m pre_commit install --hook-type commit-msg
+.\.venv\Scripts\python.exe -m pre_commit install --hook-type pre-push
 
 Write-Host "Setup complete! You can now use 'make start' or 'python main.py' to run the project." 

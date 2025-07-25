@@ -43,7 +43,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ${{ runner.os }}-binary
-          path: ${{ matrix.binary }}
+          path: dist/main/**
   release:
     needs: build
     runs-on: ubuntu-latest

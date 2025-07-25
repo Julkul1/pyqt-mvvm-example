@@ -1,4 +1,22 @@
+import sys
 from pathlib import Path
+
+
+def get_resource_path(*parts: str) -> Path:
+    """Return the absolute path to a resource, compatible with PyInstaller bundles.
+
+    Args:
+        *parts (str): Path components relative to the resource root.
+
+    Returns:
+        Path: The absolute path to the resource.
+    """
+    if hasattr(sys, "_MEIPASS"):
+        base_path = Path(sys._MEIPASS)
+    else:
+        base_path = PROJECT_ROOT
+    return base_path.joinpath(*parts)
+
 
 # Project root directory
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
@@ -7,11 +25,11 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 APP_DIR = PROJECT_ROOT / "app"
 
 # Assets and subdirectories
-ASSETS_DIR = PROJECT_ROOT / "assets"
-THEMES_DIR = ASSETS_DIR / "themes"
-LOCALES_DIR = ASSETS_DIR / "locales"
-FONTS_DIR = ASSETS_DIR / "fonts"
-IMAGES_DIR = ASSETS_DIR / "images"
+ASSETS_DIR = get_resource_path("assets")
+THEMES_DIR = get_resource_path("assets", "themes")
+LOCALES_DIR = get_resource_path("assets", "locales")
+FONTS_DIR = get_resource_path("assets", "fonts")
+IMAGES_DIR = get_resource_path("assets", "images")
 
 # App subdirectories
 UTILS_DIR = APP_DIR / "utils"

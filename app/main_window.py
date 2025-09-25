@@ -9,7 +9,7 @@ from app.views.main_view.main_view import MainView
 
 
 class MainWindow(QMainWindow):
-    """Main application window for the PyQt app."""
+    """Main application window for the PyQt appdfd."""
 
     def __init__(self, context: AppContext) -> None:
         """Initialize the Main-Window.
